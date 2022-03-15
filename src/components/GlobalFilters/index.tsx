@@ -50,7 +50,7 @@ const GlobalForm: FC<{ onConfirm: () => void }> = ({ onConfirm }) => {
     return [
       {
         key: 'dateRange',
-        label: '查询时间',
+        label: '时间范围',
         formItemCls,
         options: {
           rules: { required: true },

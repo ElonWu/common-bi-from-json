@@ -87,7 +87,7 @@ const assembleFormItem = (
     case 'timeDimension':
       return {
         key: 'timeDimension',
-        label: '时间维度',
+        label: '粒度',
         formItemCls,
         content: (
           <Select
@@ -101,7 +101,7 @@ const assembleFormItem = (
     case 'characterDimension':
       return {
         key: 'characterDimension',
-        label: '特性维度',
+        label: '维度',
         formItemCls,
         content: (
           <Select
@@ -115,7 +115,7 @@ const assembleFormItem = (
     case 'deviceDimension':
       return {
         key: 'deviceDimension',
-        label: '设备维度',
+        label: '维度',
         formItemCls,
         content: (
           <Select

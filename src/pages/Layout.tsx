@@ -10,14 +10,15 @@ import {
   IconButton,
   Popover,
   SideSheet,
+  Spin,
 } from '@douyinfe/semi-ui';
 import { IconArrowUp, IconMenu, IconMore } from '@douyinfe/semi-icons';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import useIsDarkMode from '@/store/darkMode';
 import useMatchMedia from '@/hooks/useMediaQuery';
 import DarkModeSwitch from '@/components/DarkModeSwitch';
 import Menus from './Menus';
-import useBeforePaint from '@/hooks/useBeforePaint';
+import useBeforePaint, { goBackToMainSite } from '@/hooks/useBeforePaint';
 import { getSession } from '@/utils/session';
 
 const Layout = () => {
@@ -27,8 +28,9 @@ const Layout = () => {
 
   if (!userAuthencated) {
     return (
-      <div className="w-screen h-screen flex items-center justify-center bg-gray-100">
-        <Empty title="获取身份信息失败" />
+      <div className="w-screen h-screen flex flex-col items-center justify-center bg-gray-100">
+        <Spin size="large" />
+        <Empty title="身份信息解析中" />
       </div>
     );
   }
@@ -48,8 +50,9 @@ const PCLayout = () => {
     <div className="w-screen">
       <header className="flex items-stretch justify-start shadow-md relative z-10 bg-gray-50 dark:bg-gray-100">
         <div
-          className="flex p-5 items-center justify-center"
+          className="flex p-5 items-center justify-center cursor-pointer"
           style={{ width: 240, height: 80 }}
+          onClick={goBackToMainSite}
         >
           <img
             alt="logo"
@@ -62,15 +65,19 @@ const PCLayout = () => {
           style={{ flex: 1, height: 80 }}
         >
           <div className="flex space-x-2 items-stretch justify-start">
-            <img
-              src={projectAvatar}
-              alt="projectAvatar"
-              className="w-12 h-12 rounded-sm"
-            />
+            {projectAvatar ? (
+              <img
+                src={projectAvatar}
+                alt="projectAvatar"
+                className="w-12 h-12 rounded-sm shadow-md"
+              />
+            ) : (
+              <div className="w-12 h-12 rounded-sm bg-gray-50" />
+            )}
 
             <div className="flex flex-col space-y-2 items-start justify-between">
               <h3 className="text-md font-bold text-gray-800">{projectName}</h3>
-              <p className="text-sm text-gray-400">{projectDesc}</p>
+              <p className="text-sm text-gray-600">{projectDesc}</p>
             </div>
           </div>
 
@@ -114,7 +121,7 @@ const PCLayout = () => {
  * Mobile 布局
  */
 const MobileLayout = () => {
-  const { projectName, projectAvatar, projectDesc } = useProject();
+  // const { projectName } = useProject();
 
   return (
     <div>
@@ -134,7 +141,8 @@ const MobileLayout = () => {
             className="font-bold text-md text-gray-500 text-center whitespace-nowrap overflow-hidden"
             style={{ width: 200, textOverflow: 'ellipsis' }}
           >
-            {projectName}
+            {/* {projectName} */}
+            {document.title}
           </h3>
         </div>
 
@@ -156,18 +164,42 @@ const MobileLayout = () => {
 
 const MobileMenu = () => {
   const [showMenu, setShowMenu] = useState(false);
+  const { projectName, projectAvatar } = useProject();
   return (
     <>
       <IconButton onClick={() => setShowMenu(true)} icon={<IconMenu />} />
       <SideSheet
         width={240}
+        headerStyle={{ padding: 16 }}
         bodyStyle={{ padding: 0 }}
         placement="left"
-        title="菜单"
+        title={
+          <div className="flex items-center justify-start space-x-2">
+            {projectAvatar ? (
+              <img
+                src={projectAvatar}
+                alt="projectAvatar"
+                className="w-6 h-6 rounded-sm shadow-md"
+              />
+            ) : (
+              <div className="w-6 h-6 rounded-sm bg-gray-50" />
+            )}
+            <p
+              className="font-bold text-sm text-gray-800 whitespace-nowrap overflow-hidden"
+              style={{
+                width: 160,
+                textOverflow: 'ellipsis',
+                lineHeight: '24px',
+              }}
+            >
+              {projectName}
+            </p>
+          </div>
+        }
         visible={showMenu}
         onCancel={() => setShowMenu(false)}
       >
-        <Menus />
+        <Menus onChange={() => setShowMenu(false)} />
       </SideSheet>
     </>
   );
@@ -193,19 +225,33 @@ const MobileActions = () => {
 };
 
 const useProject = () => {
-  return useMemo(() => {
-    const project = getSession('project');
+  const [project, setProject] = useState<{
+    projectName?: string;
+    projectDesc?: string;
+    projectAvatar?: string;
+  }>({});
 
-    const projectName = project?.name || '-';
-    const projectDesc = project?.desc || '-';
-    const projectAvatar = project?.iconUrl || '-';
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (!project?.projectName) {
+        const projectCache = getSession('project');
 
-    return {
-      projectName,
-      projectDesc,
-      projectAvatar,
-    };
-  }, []);
+        const projectName = projectCache?.name || '-';
+        const projectDesc = projectCache?.desc || '-';
+        const projectAvatar = projectCache?.iconUrl || '-';
+
+        setProject({
+          projectName,
+          projectDesc,
+          projectAvatar,
+        });
+      }
+    }, 100);
+
+    return () => clearTimeout(timer);
+  }, [project]);
+
+  return project;
 };
 
 export default Layout;

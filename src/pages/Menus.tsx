@@ -6,12 +6,12 @@ import {
   IconUser,
   IconUserAdd,
 } from '@douyinfe/semi-icons';
-import { useEffect, useMemo, useState } from 'react';
+import { FC, useEffect, useMemo, useState } from 'react';
 import { OnSelectedData } from '@douyinfe/semi-ui/lib/es/navigation';
 import useMediaQuery from '@/store/mediaQuery';
 import { useCustomizeLocale } from '@/components/LocaleGlobal';
 
-const Menus = () => {
+const Menus: FC<{ onChange?: () => void }> = ({ onChange }) => {
   const [selectedKeys, setSelectedKeys] = useState<any>(['overview']);
   const [openKeys, setOpenKeys] = useState<any>([]);
   const {
@@ -125,7 +125,10 @@ const Menus = () => {
           // @ts-ignore
           if (data.selectedItems[0]?.path) navigate(data.selectedItems[0].path);
         }}
-        onClick={(data: any) => (document.title = data.text || 'BI 数据后台')}
+        onClick={(data: any) => {
+          document.title = data.text || 'BI 数据后台';
+          onChange && onChange();
+        }}
         style={{ height: '100%' }}
         bodyStyle={{
           overflowY: 'auto',

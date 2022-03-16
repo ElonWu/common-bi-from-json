@@ -87,44 +87,34 @@ const useBeforePaint = () => {
   // 获取登录用户信息
   useEffect(() => {
     const init = async () => {
-      const user: any = await getUser();
+      try {
+        const [user, project]: [any, any] = await Promise.all([
+          getUser(),
+          getProject(),
+        ]);
 
-      setUserAuthencated(true);
-      setSession('user', user);
-      setLocaleType(user?.language || 'zh_CN');
+        // 用户相关
+        setSession('user', user);
+        setLocaleType(user?.language || 'zh_CN');
+
+        // 项目相关
+        setSession('project', project);
+        setSession('gameTimezone', project.timezone);
+
+        setUserAuthencated(true);
+      } catch (err) {
+        Toast.error('获取身份信息失败');
+        goBackToMainSite();
+      }
     };
 
     const user = getSession('user');
-
-    if (user) {
-      setUserAuthencated(true);
-    } else {
-      try {
-        init();
-      } catch (err) {
-        Toast.error('获取身份信息失败');
-      }
-    }
-  }, []);
-
-  // 获取项目信息
-  useEffect(() => {
-    const init = async () => {
-      const project: any = await getProject();
-      setSession('project', project);
-      setSession('gameTimezone', project.timezone);
-    };
-
     const project = getSession('project');
 
-    if (project) {
-      setSession('gameTimezone', project.timezone);
+    if (user && project) {
+      setUserAuthencated(true);
     } else {
-      try {
-        init();
-      } catch (err) {
-        Toast.error('获取项目信息失败');
-      }
+      init();
     }
   }, []);
 

@@ -41,7 +41,7 @@ const useApi = (
       // 错误后3秒内重试，最多三次
       shouldRetryOnError: true,
       errorRetryInterval: 2000,
-      errorRetryCount: 2,
+      errorRetryCount: 1,
 
       // 2秒内不发出重复请求
       dedupingInterval: 2000,

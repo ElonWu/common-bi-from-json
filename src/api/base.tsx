@@ -43,6 +43,14 @@ const handleResolve = (response: any) => {
 const handleError = (axiosError: any) => {
   const response = axiosError?.response || axiosError;
 
+  if (response?.status === 401) {
+    Notification.error({
+      title: '权限异常',
+      content: '没有此接口的访问权限，请返回数据后台重新登录',
+    });
+    return Promise.reject();
+  }
+
   let message = response?.status;
 
   if (response?.data) {

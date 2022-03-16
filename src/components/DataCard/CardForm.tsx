@@ -64,13 +64,7 @@ const CardFrom = function ({
 
   return (
     <div className="flex items-end justify-start">
-      <Form
-        className={
-          isMobile
-            ? 'flex flex-col items-start justify-start space-y-4'
-            : 'flex items-center justify-start flex-wrap space-x-4'
-        }
-      >
+      <Form className={'flex items-center justify-start flex-wrap space-x-4'}>
         {Object.values(formItemDoms)}
       </Form>
     </div>
@@ -105,6 +99,7 @@ const assembleFormItem = (
         formItemCls,
         content: (
           <Select
+            showClear
             placeholder="请选择"
             loading={loading}
             optionList={CharacterDimensions}

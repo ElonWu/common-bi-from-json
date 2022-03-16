@@ -113,23 +113,30 @@ const DataCard = ({ config }: { config: IDataCard }) => {
       return;
     }
 
-    let columns: any[] = [];
-
-    const dataSource = await config.downloadFetcher(requestPayload);
-
     const previewConfig = config.preview.find((item) => item.type === 'table');
-
-    if (previewConfig?.columns) {
-      columns = previewConfig.columns
-        .filter((col: Column) => Boolean(col.excel))
-        .map((col: Column) => {
-          return {
-            header: col.title,
-            key: col.key,
-          };
-        });
+    if (!previewConfig?.columns || previewConfig.columns.length === 0) {
+      Toast.error('未配置数据导出的列');
+      return;
     }
 
+    // 获取导出数据
+    const dataSource = await config.downloadFetcher(requestPayload);
+    if (dataSource.length === 0) {
+      Toast.warning('暂无数据可导出');
+      return;
+    }
+
+    // 转换为导出的列配置
+    const columns: any[] = previewConfig.columns
+      .filter((col: Column) => Boolean(col.excel))
+      .map((col: Column) => {
+        return {
+          header: col.title,
+          key: col.key,
+        };
+      });
+
+    // 触发下载导出文件
     exportExcel({
       dataSource,
       columns,

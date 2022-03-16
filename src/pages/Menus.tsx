@@ -125,7 +125,7 @@ const Menus = () => {
           // @ts-ignore
           if (data.selectedItems[0]?.path) navigate(data.selectedItems[0].path);
         }}
-        // onClick={(data) => console.log('trigger onClick: ', data)}
+        onClick={(data: any) => (document.title = data.text || 'BI 数据后台')}
         style={{ height: '100%' }}
         bodyStyle={{
           overflowY: 'auto',

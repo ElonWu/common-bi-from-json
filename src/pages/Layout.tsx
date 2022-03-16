@@ -4,23 +4,45 @@ import logo from '@imgs/logo.png';
 import darkLogo from '@imgs/logo_dark.png';
 import { LocaleSelect } from '@/components/LocaleGlobal';
 import GlobalFilters from '@/components/GlobalFilters';
-import { BackTop, IconButton, Popover, SideSheet } from '@douyinfe/semi-ui';
+import {
+  BackTop,
+  Empty,
+  IconButton,
+  Popover,
+  SideSheet,
+} from '@douyinfe/semi-ui';
 import { IconArrowUp, IconMenu, IconMore } from '@douyinfe/semi-icons';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import useIsDarkMode from '@/store/darkMode';
 import useMatchMedia from '@/hooks/useMediaQuery';
 import DarkModeSwitch from '@/components/DarkModeSwitch';
 import Menus from './Menus';
+import useBeforePaint from '@/hooks/useBeforePaint';
+import { getSession } from '@/utils/session';
 
 const Layout = () => {
   const [isMobile] = useMatchMedia();
-  return isMobile ? <MobileLayout /> : <PCLayout />;
+
+  const userAuthencated = useBeforePaint();
+
+  if (!userAuthencated) {
+    return (
+      <div className="w-screen h-screen flex items-center justify-center bg-gray-100">
+        <Empty title="获取身份信息失败" />
+      </div>
+    );
+  }
+
+  if (isMobile) return <MobileLayout />;
+
+  return <PCLayout />;
 };
 /**
  * PC 布局
  */
 const PCLayout = () => {
   const { value: isDarkMode } = useIsDarkMode();
+  const { projectName, projectAvatar, projectDesc } = useProject();
 
   return (
     <div className="w-screen">
@@ -39,7 +61,18 @@ const PCLayout = () => {
           className="flex items-center justify-between p-4"
           style={{ flex: 1, height: 80 }}
         >
-          <div className="text-gray-800">新信长之野望</div>
+          <div className="flex space-x-2 items-stretch justify-start">
+            <img
+              src={projectAvatar}
+              alt="projectAvatar"
+              className="w-12 h-12 rounded-sm"
+            />
+
+            <div className="flex flex-col space-y-2 items-start justify-between">
+              <h3 className="text-md font-bold text-gray-800">{projectName}</h3>
+              <p className="text-sm text-gray-400">{projectDesc}</p>
+            </div>
+          </div>
 
           <div className="flex space-x-4 items-center justify-end">
             <DarkModeSwitch />
@@ -81,6 +114,8 @@ const PCLayout = () => {
  * Mobile 布局
  */
 const MobileLayout = () => {
+  const { projectName, projectAvatar, projectDesc } = useProject();
+
   return (
     <div>
       <div
@@ -94,7 +129,14 @@ const MobileLayout = () => {
           <MobileMenu />
         </div>
 
-        <div className="text-gray-800">新信长之野望</div>
+        <div className="flex flex-1 items-center justify-center px-2">
+          <h3
+            className="font-bold text-md text-gray-500 text-center whitespace-nowrap overflow-hidden"
+            style={{ width: 200, textOverflow: 'ellipsis' }}
+          >
+            {projectName}
+          </h3>
+        </div>
 
         <div className="flex items-center justify-end space-x-2">
           <GlobalFilters />
@@ -148,6 +190,22 @@ const MobileActions = () => {
       <IconButton icon={<IconMore />} />
     </Popover>
   );
+};
+
+const useProject = () => {
+  return useMemo(() => {
+    const project = getSession('project');
+
+    const projectName = project?.name || '-';
+    const projectDesc = project?.desc || '-';
+    const projectAvatar = project?.iconUrl || '-';
+
+    return {
+      projectName,
+      projectDesc,
+      projectAvatar,
+    };
+  }, []);
 };
 
 export default Layout;

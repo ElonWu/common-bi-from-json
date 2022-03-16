@@ -5,13 +5,13 @@ import {
   DEV_BASEURL,
   TEST_BASEURL,
   RELEASE_BASEURL,
-  // DATA_DEV_BASEURL,
-  // DATA_TEST_BASEURL,
-  // DATA_RELEASE_BASEURL,
+  DATA_DEV_BASEURL,
+  DATA_TEST_BASEURL,
+  DATA_RELEASE_BASEURL,
 } from '../../defaultSettings';
 import { Notification } from '@douyinfe/semi-ui';
 
-let BI_BASEURL;
+let BI_BASEURL, DATA_BASEURL;
 
 // @ts-ignore
 export const isDeveloping = true;
@@ -25,11 +25,14 @@ export const isReleasing = false;
 
 if (isDeveloping) {
   BI_BASEURL = DEV_BASEURL;
+  DATA_BASEURL = DATA_DEV_BASEURL;
   // mockRequest();
 } else if (isTesting) {
   BI_BASEURL = TEST_BASEURL;
+  DATA_BASEURL = DATA_TEST_BASEURL;
 } else {
   BI_BASEURL = RELEASE_BASEURL;
+  DATA_BASEURL = DATA_RELEASE_BASEURL;
 }
 
 const handleResolve = (response: any) => {
@@ -59,6 +62,11 @@ const handleError = (axiosError: any) => {
 };
 
 export const BIBaseApi = new Request(BI_BASEURL, {
+  onSuccess: handleResolve,
+  onError: handleError,
+});
+
+export const DataBaseApi = new Request(DATA_BASEURL, {
   onSuccess: handleResolve,
   onError: handleError,
 });

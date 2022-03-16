@@ -1,3 +1,4 @@
+import { goBackToMainSite } from '@/hooks/useBeforePaint';
 import { getSession } from '@/utils/session';
 import { BIBaseApi as BaseApi } from './base';
 // import { EnumList, getEnum } from './enum';
@@ -38,19 +39,16 @@ export interface RequestParams {
 }
 
 const getUrl = () => {
-  // @ts-ignore
-  const isDeveloping = window?.NODE_ENV !== 'production';
-
-  // const projectCode = isDeveloping ? 'xxczywin' : getSession('gameCode');
-  const projectCode = isDeveloping ? 'xxczywin' : getSession('gameCode');
+  const projectCode = getSession('gameCode');
 
   if (!projectCode) {
-    window.history.back();
+    goBackToMainSite();
     return;
   }
 
   return `/api/bi/${projectCode}`;
 };
+
 // 新增设备
 export const getNewlyDevices = (params: RequestParams) =>
   BaseApi.post(`${getUrl()}/newly/device`, params);

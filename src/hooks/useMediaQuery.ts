@@ -44,8 +44,8 @@ const useMatchMedia = (limits = [768, 1024, 1440, 1920]) => {
   return matchList;
 };
 
-function genMediaQueryStr(list) {
-  let result = [];
+function genMediaQueryStr(list: number[]) {
+  let result: string[] = [];
   if (!Array.isArray(list) || list.length === 0) return result;
 
   // 去重 => 只保留数字 => 排序

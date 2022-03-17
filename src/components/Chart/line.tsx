@@ -7,7 +7,11 @@ export const Line = React.forwardRef(
     const configChart = useCallback<ChartRenderer>(({ chart, source }) => {
       chart.data(source);
       // 绘制线图
-      chart.line().position('x*y').shape('smooth').size(5);
+      chart
+        .line()
+        .position('x*y')
+        // .shape('smooth')
+        .size(3);
 
       chart.legend({
         position: 'bottom',

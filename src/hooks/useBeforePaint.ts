@@ -72,7 +72,8 @@ const useBeforePaint = () => {
 
     // 开发中
     if (isDeveloping) {
-      setSession('gameCode', 'xxczywin');
+      // setSession('gameCode', 'xxczywin');
+      setSession('gameCode', 'xxczyw');
       setSession('gameName', '信长之野望');
       setSession('gameTimezone', 'Asia/Shanghai');
     }

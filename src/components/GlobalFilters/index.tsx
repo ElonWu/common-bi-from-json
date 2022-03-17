@@ -10,6 +10,7 @@ import useGlobalFormsState from '@/store/globalForms';
 import useMediaQuery from '@/store/mediaQuery';
 import { MetaList } from '@/api/meta';
 import { subDays } from 'date-fns';
+import { isDeveloping } from '@/api/base';
 
 const GlobalFilters = () => {
   const [showGlobalFilters, setGlobalFilers] = useState(false);
@@ -27,7 +28,16 @@ const GlobalFilters = () => {
 
       <SideSheet
         width={isMobile ? '100%' : 480}
-        title="全局筛选"
+        headerStyle={{
+          padding: isMobile ? '16px 24px' : '28px 24px',
+          boxShadow: '0 2px 8px 0 rgb(193 192 192 / 40%)',
+        }}
+        title={
+          <div className="flex space-x-2 items-center justify-start">
+            <IconFilter size="large" className="text-blue-500" />
+            <h4>全局筛选</h4>
+          </div>
+        }
         visible={showGlobalFilters}
         onCancel={() => setGlobalFilers(false)}
       >
@@ -54,7 +64,9 @@ const GlobalForm: FC<{ onConfirm: () => void }> = ({ onConfirm }) => {
         formItemCls,
         options: {
           rules: { required: true },
-          initialValue: [subDays(Date.now(), 7), Date.now()],
+          initialValue: isDeveloping
+            ? [new Date('2021-11-20'), new Date('2021-12-20')] // 开发服默认时间段
+            : [subDays(Date.now(), 7), Date.now()],
         },
         content: (
           <DatePicker
@@ -156,14 +168,15 @@ const GlobalForm: FC<{ onConfirm: () => void }> = ({ onConfirm }) => {
   }, [onConfirm, onValidate, setValue]);
 
   return (
-    <Form className="h-full flex flex-col space-y-4 pb-4">
-      <div className="flex-1 flex flex-col space-y-4 items-stretch justify-start">
+    <div className="h-full flex flex-col space-y-4 py-4">
+      <Form className="flex-1 flex flex-col space-y-4 items-stretch justify-start overflow-y-auto">
         {Object.values(formItemDoms)}
-      </div>
+      </Form>
+
       <Button theme="solid" type="primary" onClick={onSubmit}>
         确认
       </Button>
-    </Form>
+    </div>
   );
 };
 

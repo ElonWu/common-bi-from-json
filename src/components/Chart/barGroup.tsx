@@ -20,7 +20,7 @@ export const BarGroup = React.forwardRef(
             marginRatio: 0.2,
           },
         ])
-        .style({ radius: [8, 8, 0, 0] });
+        .style({ radius: [4, 4, 0, 0] });
     }, []);
 
     return (

@@ -21,7 +21,7 @@ export const BarStack = React.forwardRef(
       chart
         .interval()
         .position('x*y')
-        .style({ radius: [2, 2, 2, 2] })
+        .style({ radius: [0, 0, 0, 0] })
         .adjust('stack')
         .color('z');
     }, []);

@@ -21,7 +21,7 @@ export const Bar = React.forwardRef(
       chart
         .interval()
         .position('x*y')
-        .style({ radius: [8, 8, 0, 0] });
+        .style({ radius: [4, 4, 0, 0] });
     }, []);
 
     return (

@@ -1,8 +1,12 @@
 import { useCallback, useMemo, useState } from 'react';
 import type { IDataCard, PreviewItem, PreviewList, Column } from './type';
 
-import { Select, IconButton, Toast } from '@douyinfe/semi-ui';
-import { IconDownload, IconRefresh } from '@douyinfe/semi-icons';
+import { Select, IconButton, Toast, Tooltip } from '@douyinfe/semi-ui';
+import {
+  IconDownload,
+  IconInfoCircle,
+  IconRefresh,
+} from '@douyinfe/semi-icons';
 import Preview from './Preview';
 
 import { notNil } from '@/utils/type';
@@ -144,6 +148,10 @@ const DataCard = ({ config }: { config: IDataCard }) => {
     });
   }, [config, requestPayload]);
 
+  const multipleDemension = useMemo(() => {
+    return requestPayload?.dimensions?.length > 1;
+  }, [requestPayload]);
+
   return (
     <div className="w-full p-4 rounded-md flex flex-col space-y-4 items-stretch justify-start min-w-0 bg-white dark:bg-gray-100 shadow-md">
       {/* 头部 */}
@@ -152,7 +160,22 @@ const DataCard = ({ config }: { config: IDataCard }) => {
         style={{ borderColor: '#ededed99' }}
       >
         {/* 标题 */}
-        <h3 className="text-bold text-lg text-gray-800">{config.title}</h3>
+        <div className="flex items-center justify-start space-x-2">
+          <h3 className="font-bold text-md text-gray-800">
+            {config.title} - {multipleDemension ? '多维度' : '单维度'}
+          </h3>
+
+          {config.description && (
+            <Tooltip
+              trigger="hover"
+              position="right"
+              showArrow
+              content={<p className="text-sm">{config.description}</p>}
+            >
+              <IconInfoCircle size="small" className="text-primary-500" />
+            </Tooltip>
+          )}
+        </div>
         {/* 通用操作 */}
         <div className="flex space-x-2 items-center justify-end">
           {notNil(reload) && (
@@ -198,7 +221,6 @@ const DataCard = ({ config }: { config: IDataCard }) => {
           primaryKey={config.key}
           config={previewConfig}
           dataSource={data as any[]}
-          // filters={filters}
           loading={loading}
           error={Boolean(error)}
         />

@@ -17,8 +17,8 @@ export const LineEnhance = React.forwardRef(
         .line()
         .position('x*y')
         .tooltip(false) // 点图和线图不显示 tooltip
-        .shape('smooth')
-        .size(5)
+        // .shape('smooth')
+        .size(3)
         .style({
           lineCap: 'round',
           lineJoin: 'round',
@@ -32,7 +32,7 @@ export const LineEnhance = React.forwardRef(
       chart
         .area()
         .position('x*y')
-        .shape('smooth')
+        // .shape('smooth')
         .color(`l(90) 0:${colors.primary[400]} 1:${colors.blue[400]}66`);
 
       // 绘制点图

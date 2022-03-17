@@ -138,7 +138,7 @@ const MobileLayout = () => {
 
         <div className="flex flex-1 items-center justify-center px-2">
           <h3
-            className="font-bold text-md text-gray-500 text-center whitespace-nowrap overflow-hidden"
+            className="font-bold text-md text-gray-800 text-center whitespace-nowrap overflow-hidden"
             style={{ width: 200, textOverflow: 'ellipsis' }}
           >
             {/* {projectName} */}

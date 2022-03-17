@@ -77,21 +77,6 @@ module.exports = {
     colors: {
       white: 'rgba(var(--semi-white), 1)',
       black: 'rgba(var(--semi-black), 1)',
-
-      back: {
-        0: 'var(--semi-color-bg-0)',
-        1: 'var(--semi-color-bg-1)',
-        2: 'var(--semi-color-bg-2)',
-        3: 'var(--semi-color-bg-3)',
-        4: 'var(--semi-color-bg-4)',
-      },
-      fore: {
-        0: 'var(--semi-color-text-0)',
-        1: 'var(--semi-color-text-1)',
-        2: 'var(--semi-color-text-2)',
-        3: 'var(--semi-color-text-3)',
-      },
-
       primary: {
         50: 'rgba(var(--semi-indigo-0), 1)',
         100: 'rgba(var(--semi-indigo-1), 1)',

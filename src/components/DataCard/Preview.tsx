@@ -6,7 +6,7 @@ import type {
 import useMediaQuery from '@/store/mediaQuery';
 import { Empty, Spin, Table } from '@douyinfe/semi-ui';
 import type { FC } from 'react';
-import { Line, Pie, Bar } from '@/components/Chart';
+import { Line, Pie, Bar, LineEnhance, ChartRenderer } from '@/components/Chart';
 import {
   IllustrationConstruction,
   IllustrationConstructionDark,
@@ -104,6 +104,10 @@ const PreviewItemRenderer: FC<{
   dataSource: any[];
   loading: boolean;
 }> = ({ primaryKey, config, dataSource, loading }) => {
+  const {
+    value: [isMobile],
+  } = useMediaQuery();
+
   if (!Array.isArray(dataSource)) return null;
 
   if (config.type === 'table') {
@@ -113,16 +117,40 @@ const PreviewItemRenderer: FC<{
     }));
 
     return (
-      <Table columns={columns} loading={loading} dataSource={dataSource} />
+      <Table
+        size="small"
+        pagination={
+          isMobile
+            ? { pageSize: 5, showTotal: false, size: 'small' }
+            : { pageSize: 8 }
+        }
+        columns={columns}
+        loading={loading}
+        dataSource={dataSource}
+        empty={
+          <Empty
+            image={
+              <IllustrationConstruction style={{ width: 150, height: 150 }} />
+            }
+            darkModeImage={
+              <IllustrationConstructionDark
+                style={{ width: 150, height: 150 }}
+              />
+            }
+            title="暂无数据"
+          />
+        }
+      />
     );
   }
 
   if (config.type === 'line') {
     return (
-      <Line
+      <LineEnhance
         chartKey={`Line-${primaryKey}`}
         loading={loading}
         dataSource={formatChartDate(dataSource, config)}
+        setConfig={setChartConfig(config)}
       />
     );
   }
@@ -143,6 +171,7 @@ const PreviewItemRenderer: FC<{
         chartKey={`Bar-${primaryKey}`}
         loading={loading}
         dataSource={formatChartDate(dataSource, config)}
+        setConfig={setChartConfig(config)}
       />
     );
   }
@@ -155,9 +184,27 @@ const formatChartDate = (dataSource: any[], config: PreviewItem) => {
     let item: { x?: string; y?: string; z?: string } = {};
     if ('x' in config && config.x) item.x = el[config.x];
     if ('y' in config && config.y) item.y = el[config.y];
-    if ('z' in config && config.z) item.z = el[config.z];
+    if ('z' in config && config.z) {
+      if (config.zMap) {
+        // z 映射的文本
+        item.z = config.zMap[el[config.z]];
+      } else {
+        // 直接使用返回的字段
+        item.z = el[config.z];
+      }
+    }
     return item;
   });
 };
+
+const setChartConfig =
+  (config: PreviewItem): ChartRenderer =>
+  ({ chart }) => {
+    if (config.scaleY) {
+      chart.scale({
+        y: { alias: config.scaleY },
+      });
+    }
+  };
 
 export default Preview;

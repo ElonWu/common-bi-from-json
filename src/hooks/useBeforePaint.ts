@@ -12,15 +12,15 @@ export const goBackToMainSite = () => {
   // 开发
   if (isDeveloping) {
     console.log('__developing__');
-    mainSite = `https://test-data.bbgdata.com`;
+    mainSite = `develop_main_site.xx.com`;
   }
   // 测试服
   else if (isTesting) {
-    mainSite = `https://test-data.bbgdata.com`;
+    mainSite = `test_main_site.xx.com`;
   }
   // 正式服
   else if (isReleasing) {
-    mainSite = `https://data.bbgdata.com`;
+    mainSite = `release_main_site.xx.com`;
   }
   // 返回 referer
   else if (
@@ -59,8 +59,6 @@ const useBeforePaint = () => {
       const gameRegion = findTargetSerach(location?.search, 'gameRegion');
       const gameTimezone = findTargetSerach(location?.search, 'gameTimezone');
 
-      // console.log({ gameCode, gameId, gameName, gameRegion });
-
       if (gameCode) {
         setSession('gameCode', gameCode);
         setSession('gameId', gameId);
@@ -72,7 +70,6 @@ const useBeforePaint = () => {
 
     // 开发中
     if (isDeveloping) {
-      // setSession('gameCode', 'xxczywin');
       setSession('gameCode', 'xxczyw');
       setSession('gameName', '信长之野望');
       setSession('gameTimezone', 'Asia/Shanghai');

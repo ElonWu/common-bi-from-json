@@ -3,6 +3,7 @@ import { IDataCard } from '@/components/DataCard/type';
 const ActiveUserConfig: IDataCard = {
   key: 'ActiveUser',
   title: '活跃用户',
+  description: '描述何为活跃用户',
   downloadable: true,
   privateForms: ['timeDimension', 'characterDimension'],
   globalForms: [
@@ -24,13 +25,14 @@ const ActiveUserConfig: IDataCard = {
       label: '线图',
       x: 'dateDay',
       y: 'value',
+      scaleY: '新增人数',
     },
     {
       type: 'table',
       label: '图表',
       columns: [
         {
-          key: 'time',
+          key: 'dateDay',
           title: '时间',
           excel: true,
         },
@@ -50,6 +52,7 @@ const ActiveUserConfig: IDataCard = {
           label: '趋势',
           x: 'dateDay',
           y: 'value',
+          scaleY: '新增人数',
           grid: 8,
         },
         {
@@ -57,6 +60,7 @@ const ActiveUserConfig: IDataCard = {
           label: '来源',
           x: 'dateDay',
           y: 'value',
+          scaleY: '新增人数',
           grid: 4,
         },
       ],

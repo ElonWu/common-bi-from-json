@@ -3,6 +3,7 @@ import { IDataCard } from '@/components/DataCard/type';
 const DeviceConfig: IDataCard = {
   key: 'Device',
   title: '设备分布',
+  description: '描述设备分布规则',
   downloadable: true,
   privateForms: ['deviceDimension'],
   globalForms: ['dateRange', 'serverIds', 'packageNames', 'os', 'distributors'],
@@ -11,7 +12,7 @@ const DeviceConfig: IDataCard = {
   },
   preview: [
     {
-      type: 'multline-pie',
+      type: 'table-pie',
       label: '组合',
       children: [
         {
@@ -20,7 +21,7 @@ const DeviceConfig: IDataCard = {
           grid: 6,
           columns: [
             {
-              key: 'time',
+              key: 'city',
               title: '时间',
               excel: true,
             },
@@ -34,7 +35,7 @@ const DeviceConfig: IDataCard = {
         {
           type: 'pie',
           label: '来源',
-          x: 'dateDay',
+          x: 'city',
           y: 'value',
           grid: 6,
         },

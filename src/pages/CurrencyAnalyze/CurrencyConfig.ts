@@ -3,6 +3,7 @@ import { IDataCard } from '@/components/DataCard/type';
 const CurrencyConfig: IDataCard = {
   key: 'Currency',
   title: '货币分析',
+  description: '描述货币分析规则',
   downloadable: true,
   privateForms: ['currencyDimension', 'currencyTrace'],
   globalForms: ['dateRange', 'serverIds', 'os', 'city', 'rechargeUser'],
@@ -11,7 +12,7 @@ const CurrencyConfig: IDataCard = {
   },
   preview: [
     {
-      type: 'multline-pie',
+      type: 'table-pie',
       label: '组合',
       children: [
         {

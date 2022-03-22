@@ -3,6 +3,7 @@ import { IDataCard } from '@/components/DataCard/type';
 const NewlyDeviceConfig: IDataCard = {
   key: 'NewlyDevice',
   title: '新增设备',
+  description: '描述何为新增设备',
   downloadable: true,
   privateForms: ['timeDimension', 'characterDimension'],
   globalForms: [
@@ -24,13 +25,14 @@ const NewlyDeviceConfig: IDataCard = {
       label: '线图',
       x: 'dateDay',
       y: 'value',
+      scaleY: '新增人数',
     },
     {
       type: 'table',
       label: '图表',
       columns: [
         {
-          key: 'time',
+          key: 'dateDay',
           title: '时间',
           excel: true,
         },
@@ -50,13 +52,15 @@ const NewlyDeviceConfig: IDataCard = {
           label: '趋势',
           x: 'dateDay',
           y: 'value',
+          scaleY: '新增人数',
           grid: 6,
         },
         {
-          type: 'pie',
+          type: 'bar',
           label: '来源',
           x: 'dateDay',
           y: 'value',
+          scaleY: '新增人数',
           grid: 6,
         },
       ],

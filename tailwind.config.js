@@ -3,7 +3,11 @@ const animationConfig = require('./tailwind.config.animation');
 
 module.exports = {
   // mode: 'jit',
-  purge: ['./src/**/*.{js,jsx,ts,tsx}', './index.html'],
+  purge: [
+    './src/components/**/*.{js,jsx,ts,tsx}',
+    './src/pages/**/*.{js,jsx,ts,tsx}',
+    './index.html',
+  ],
   darkMode: 'class',
   theme: {
     screens: {
@@ -17,11 +21,6 @@ module.exports = {
       sm: '0px 2px 4px 0px rgba(11,10,55,0.15)',
       md: '0px 4px 8px 0px rgba(22,19,88,0.12)',
       lg: '0px 8px 20px 0px rgba(18,16,99,0.06)',
-    },
-
-    fontFamily: {
-      sans: ['Inter', ...defaultTheme.fontFamily.sans],
-      serif: ['Inter', ...defaultTheme.fontFamily.serif],
     },
     fontSize: {
       sm: [
@@ -201,12 +200,12 @@ module.exports = {
       animation: animationConfig.animation,
     },
     // 用于 svg 填充
-    fill: (theme) => theme('colors'),
+    // fill: (theme) => theme('colors'),
   },
   variants: {
     extend: {
       // animation: ['hover', 'focus'], // 允许目标前缀下可使用 animation utilities
-      transform: ['hover', 'focus'],
+      // transform: ['hover', 'focus'],
       // backgroundColor: ['active'],
       // textColor: ['active'],
     },

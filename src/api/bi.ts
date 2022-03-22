@@ -141,14 +141,6 @@ export const getNewlyLevelAnalyze = (params: RequestParams) =>
 export const getActiveLevelAnalyze = (params: RequestParams) =>
   BaseApi.post(`${getUrl()}/level/active/role`, params);
 
-// 任务分析
-// 新增用户
-export const getNewlyTaskAnalyze = (params: RequestParams) =>
-  BaseApi.post(`${getUrl()}/task/newly/role`, params);
-// 活跃用户
-export const getActiveTaskAnalyze = (params: RequestParams) =>
-  BaseApi.post(`${getUrl()}/task/active/role`, params);
-
 // 商城分析
 // 商店商品购买总金额
 export const getStorePaidSum = (params: RequestParams) =>

@@ -29,6 +29,12 @@ const routes: ElonRoute[] = [
         key: 'device',
         title: '设备分析',
       },
+      {
+        path: '/distribution',
+        component: 'DistributionAnalyze',
+        key: 'distribution',
+        title: '活跃分布',
+      },
 
       {
         path: '/currency',

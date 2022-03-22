@@ -62,6 +62,13 @@ const Menus: FC<{ onChange?: () => void }> = ({ onChange }) => {
         icon: <IconCreditCard />,
       },
 
+      {
+        itemKey: 'distribution',
+        text: '活跃分布',
+        path: '/distribution',
+        icon: <IconUser />,
+      },
+
       // {
       //   itemKey: 'lost',
       //   text: '流失分析',
